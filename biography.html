@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анфіса Крамаренко</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f5f5dc; /* Нюдовий фон */
+            color: #333; /* Темно-сірий текст */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #f8f8f0; /* Світліший нюдовий контейнер */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column; /* Змінено на column для розміщення нового контенту */
+            max-width: 800px;
+            width: 90%;
+            padding: 30px;
+            box-sizing: border-box; /* Важливо для правильного розрахунку padding */
+        }
+
+        .profile-section {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .left-column {
+            flex: 0 0 300px;
+            padding-right: 20px;
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #e0e0d4; /* Нюдовий колір рамки */
+        }
+
+        .right-column {
+            flex: 1;
+        }
+
+        h1 {
+            color: #a08c79; /* Теплий нюдовий заголовок */
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #776e65; /* Трохи темніший нюдовий підзаголовок */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .qualification-section {
+            margin-top: 30px;
+        }
+
+        .certificate-images {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            overflow-x: auto; /* Додано горизонтальну прокрутку для зображень */
+            padding-bottom: 10px; /* Щоб не обрізати нижню частину прокрутки */
+        }
+
+        .certificate-image-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .certificate-image {
+            width: 150px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .certificate-image:hover {
+            transform: scale(1.05);
+        }
+
+        .list-button {
+            background-color: #e0e0d4; /* Світлий нюдовий колір кнопки */
+            color: #333;
+            border: 1px solid #d0d0c4;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            display: inline-block; /* Щоб кнопка займала лише необхідну ширину */
+        }
+
+        .list-button:hover {
+            background-color: #d0d0c4;
+        }
+
+        .accent-button {
+            background-color: #b8ada0; /* Приглушений зеленувато-нюдовий */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .accent-button:hover {
+            background-color: #9e9285;
+        }
+
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #a0c4df; /* Світлий блакитний для контрасту (можна змінити на нюдовий) */
+            color: #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .floating-button:hover {
+            background-color: #87bdd8;
+        }
+
+        .modal {
+            display: none; /* Приховано за замовчуванням */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            display: flex; /* Для центрування (якщо ви його використовуєте) */
+            justify-content: center; /* Для центрування (якщо ви його використовуєте) */
+            align-items: center; /* Для центрування (якщо ви його використовуєте) */
+        }
+
+        .modal-content {
+            position: relative;
+            /* margin: auto; Видалено, оскільки використовуємо flexbox для центрування */
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            /* transform: translate(-50%, -50%); Видалено, оскільки використовуємо flexbox для центрування */
+            /* top: 50%; Видалено, оскільки використовуємо flexbox для центрування */
+            /* left: 50%; Видалено, оскільки використовуємо flexbox для центрування */
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            display: block; /* Щоб прибрати зайвий простір знизу */
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        #certificateModal {
+    display: none; /* Ось це важливо */
+    /* ... інші стилі модального вікна ... */
+}
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: #f1f1f1;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .arrow:hover {
+            opacity: 0.8;
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-section">
+            <div class="left-column">
+                <h1>Анфіса Крамаренко</h1>
+                <img src="placeholder-profile.jpg" alt="Фото Анфіси Крамаренко" class="profile-image">
+            </div>
+            <div class="right-column">
+                <p>Teacher Trainer</p>
+                <p>Senior Teacher</p>
+                <p>General English</p>
+                <p>Business English</p>
+                <p>Exam preparation: IELTS, B2 First, C1 Advanced, C2 Proficiency</p>
+                <p>International Speaking Examiner</p>
+
+                <h2>Освіта</h2>
+                <ul>
+                    <li>Запорізький національний університет (Магістр філології: викладач англійської мови, перекладач)</li>
+                    <li>Запорізький національний університет (Бакалавр філології: перекладач англійської мови)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="qualification-section">
+            <h2>Кваліфікації</h2>
+            <ul>
+                <li>CELTA (Certificate in English Language Teaching to Adults)</li>
+                <li>C1 Advanced</li>
+                <li>C2 Proficiency</li>
+                <li>IELTS (International English Language Testing System)</li>
+                <li>Participation in professional development and teacher training events</li>
+            </ul>
+
+
+            <div class="certificate-images">
+                <div class="certificate-image-container">
+                    <img src="images/teacher.jpg" alt="Сертифікат CELTA" class="certificate-image" data-index="0">
+                </div>
+                <div class="certificate-image-container">
+                    <img src="images/teacher_2.jpg" alt="Сертифікат CELTA" class="certificate-image" data-index="0">
+                </div>
+                <div class="certificate-image-container">
+                    <img src="images/logo.svg" alt="Сертифікат CELTA" class="certificate-image" data-index="0">
+                </div>
+                <div class="certificate-image-container">
+                    <img src="images/teacher.jpg" alt="Сертифікат CELTA" class="certificate-image" data-index="0">
+                </div>
+                </div>
+        </div>
+    </div>
+
+    <div id="certificateModal" class="modal">
+        <span class="close-button">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <a class="prev arrow">&#10094;</a>
+        <a class="next arrow">&#10095;</a>
+    </div>
+    <script>
+const certificateImages = document.querySelectorAll('.certificate-image');
+        const modal = document.getElementById('certificateModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeButton = document.querySelector('.close-button');
+        const prevArrow = document.querySelector('.prev');
+        const nextArrow = document.querySelector('.next');
+        let currentIndex = 0;
+        const imageSources = Array.from(certificateImages).map(img => img.src);
+
+        certificateImages.forEach(img => {
+            img.addEventListener('click', () => {
+                modal.style.display = 'flex'; // Змінено на 'flex' для центрування
+                modalImage.src = img.src;
+                currentIndex = parseInt(img.dataset.index);
+            });
+        });
+
+        closeButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        prevArrow.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + imageSources.length) % imageSources.length;
+            modalImage.src = imageSources[currentIndex];
+        });
+
+        nextArrow.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % imageSources.length;
+            modalImage.src = imageSources[currentIndex];
+        });
+
+        // Запобігання розгортанню при оновленні сторінки
+        // (Додатковий код не потрібен, оскільки модальне вікно за замовчуванням приховане в CSS)
+    </script>
+</body>
+</html>
